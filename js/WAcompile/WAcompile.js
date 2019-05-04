@@ -9,18 +9,22 @@ if(isWabtDefined) {
     s.src = 'https://cdn.jsdelivr.net/npm/wabt@latest/index.js';
     document.head.appendChild(s);
 }
-
-const compileWebAssembly = (code, log = true, write_debug_names = true) => {
-    let arr = [];
-    for(let i = 0; i < code.length; i++) {
-        arr[i] = code.charCodeAt(i);
-    }
-    const bytes = new Uint8Array(arr);
-    let features = []
-    const modules = WabtModule().parseWat(code, bytes, features);
-    modules.resolveNames();
-    modules.validate(features);
-    const bin = modules.toBinary({log:log, write_debug_names:write_debug_names});
-    const lib = new WebAssembly.Instance(new WebAssembly.Module(bin.buffer),{}).exports;
-    return lib;
-}
+setTimeout(function() { 
+    return new Promise(resolver => { 
+        resolver(
+            const compileWebAssembly = (code, log = true, write_debug_names = true) => {
+                let arr = [];
+                for(let i = 0; i < code.length; i++) {
+                    arr[i] = code.charCodeAt(i);
+                }
+                const bytes = new Uint8Array(arr);
+                let features = []
+                const modules = WabtModule().parseWat(code, bytes, features);
+                modules.resolveNames();
+                modules.validate(features);
+                const bin = modules.toBinary({log:log, write_debug_names:write_debug_names});
+                const lib = new WebAssembly.Instance(new WebAssembly.Module(bin.buffer),{}).exports;
+                return lib;
+            })
+        })
+},300)
